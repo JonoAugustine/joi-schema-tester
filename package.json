@@ -1,0 +1,31 @@
+{
+  "name": "joi-schema-tester",
+  "version": "1.0.0",
+  "description": "An interactive app for testing [Hapi/JOI](https://www.npmjs.com/package/@hapi/joi)\r Schemas.",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "parcel serve index.html -d docs",
+    "build": "parcel build index.html -d docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonoAugustine/joi-schema-tester.git"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/JonoAugustine/joi-schema-tester/issues"
+  },
+  "homepage": "https://github.com/JonoAugustine/joi-schema-tester#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-react": "^7.8.3"
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.0",
+    "dword": "^12.0.0",
+    "sass": "^1.26.1"
+  }
+}
