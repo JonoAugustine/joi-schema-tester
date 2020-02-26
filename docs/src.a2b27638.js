@@ -183,6 +183,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Set a global reference to JOI so that eval can find it
 window.joi = _joi.default;
+/**
+ * @type {HTMLTextAreaElement}
+ */
+
+var resultArea = document.querySelector("[readonly]");
 
 var schema = _joi.default.string().regex(/jon(o|athan)/i);
 
@@ -204,7 +209,7 @@ new _Editor.default(document.querySelector("[editor=test]"), "\"Jonathan\"", fun
   var dataFunc;
 
   try {
-    dataFunc = new Function(text);
+    dataFunc = new Function("return " + text);
   } catch (error) {
     console.log(error);
     this.element.classList.add("invalid");
@@ -213,9 +218,19 @@ new _Editor.default(document.querySelector("[editor=test]"), "\"Jonathan\"", fun
 
   var data = dataFunc(); // Validate
 
-  var result = schema.validate(data);
-  console.log(result);
-  this.element.classList.remove("invalid");
+  var _schema$validate = schema.validate(data),
+      value = _schema$validate.value,
+      error = _schema$validate.error,
+      errors = _schema$validate.errors;
+
+  console.log(value, error, errors);
+  resultArea.value = error || errors || value;
+
+  if (error || errors) {
+    resultArea.classList.add("invalid");
+  } else {
+    resultArea.classList.remove("invalid");
+  }
 });
 },{"./Editor":"src/Editor.js","@hapi/joi":"node_modules/@hapi/joi/dist/joi-browser.min.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];

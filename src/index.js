@@ -4,6 +4,11 @@ import joi from "@hapi/joi";
 // Set a global reference to JOI so that eval can find it
 window.joi = joi;
 
+/**
+ * @type {HTMLTextAreaElement}
+ */
+const resultArea = document.querySelector("[readonly]");
+
 let schema = joi.string().regex(/jon(o|athan)/i);
 
 new Editor(
@@ -29,7 +34,7 @@ new Editor(document.querySelector("[editor=test]"), `"Jonathan"`, function(
   // Pull data
   let dataFunc;
   try {
-    dataFunc = new Function(text);
+    dataFunc = new Function("return " + text);
   } catch (error) {
     console.log(error);
     this.element.classList.add("invalid");
@@ -39,9 +44,15 @@ new Editor(document.querySelector("[editor=test]"), `"Jonathan"`, function(
   let data = dataFunc();
 
   // Validate
-  const result = schema.validate(data);
+  const { value, error, errors } = schema.validate(data);
 
-  console.log(result);
+  console.log(value, error, errors);
 
-  this.element.classList.remove("invalid");
+  resultArea.value = error || errors || value;
+
+  if (error || errors) {
+    resultArea.classList.add("invalid");
+  } else {
+    resultArea.classList.remove("invalid");
+  }
 });
