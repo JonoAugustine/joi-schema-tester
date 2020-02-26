@@ -34,10 +34,44 @@
             <h2>Validation Results</h2>
             <textarea class="valid" editor readonly></textarea>
           </div>
+
+          <button id="run_test">Test Your Data</button>
         </div>
       </main>
     </div>
 
+    <script>
+      // Use tabs in text area
+      document.querySelectorAll("textarea").forEach(el =>
+        el.addEventListener(
+          "keydown",
+          function(e) {
+            if (e.keyCode === 9) {
+              // tab was pressed
+              // get caret position/selection
+              var start = this.selectionStart;
+              var end = this.selectionEnd;
+
+              var target = e.target;
+              var value = target.value;
+
+              // set textarea value to: text before caret + tab + text after caret
+              target.value =
+                value.substring(0, start) +
+                " ".repeat(2) +
+                value.substring(end);
+
+              // put caret at right position again (add one for the tab)
+              this.selectionStart = this.selectionEnd = start + 1;
+
+              // prevent the focus lose
+              e.preventDefault();
+            }
+          },
+          false
+        )
+      );
+    </script>
     <script src="./src/index.js"></script>
   </body>
 </html>

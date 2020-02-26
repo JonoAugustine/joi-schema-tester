@@ -36,6 +36,16 @@ body,
   color: $color-text;
 }
 
+button {
+  text-align: center;
+  margin: 0.7rem auto;
+  border: none;
+  border-radius: $border;
+  background-color: hsl(220, 67%, 35%);
+  color: $color-text;
+  padding: $padding;
+}
+
 .container {
   max-width: 70%;
   margin: auto;
@@ -57,22 +67,11 @@ main .container {
       text-align: center;
       margin: 1rem;
     }
-
-    button {
-      text-align: center;
-      margin: 0.7rem auto;
-      border: none;
-      border-radius: $border;
-      background-color: hsl(220, 67%, 35%);
-      color: $color-text;
-      padding: $padding;
-    }
   }
 }
 
 *[editor] {
   width: 100%;
-  height: 8rem;
   max-height: 20rem;
   background-color: darken($color-bg, 50%);
   color: darken($color-text, 10%);

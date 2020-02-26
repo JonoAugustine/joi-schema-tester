@@ -1,87 +1,106 @@
 import Editor from "./Editor";
 import joi from "@hapi/joi";
 
-// Set a global reference to JOI so that eval can find it
+// Set a global reference to JOI so eval can find it
 window.joi = joi;
 
-// Use tabs in text area
-document.querySelectorAll("textarea").forEach(el =>
-  el.addEventListener(
-    "keydown",
-    function(e) {
-      if (e.keyCode === 9) {
-        // tab was pressed
-        // get caret position/selection
-        var start = this.selectionStart;
-        var end = this.selectionEnd;
-
-        var target = e.target;
-        var value = target.value;
-
-        // set textarea value to: text before caret + tab + text after caret
-        target.value =
-          value.substring(0, start) + " ".repeat(2) + value.substring(end);
-
-        // put caret at right position again (add one for the tab)
-        this.selectionStart = this.selectionEnd = start + 1;
-
-        // prevent the focus lose
-        e.preventDefault();
-      }
-    },
-    false
-  )
-);
-
 /**
+ * Area used to build schema
  * @type {HTMLTextAreaElement}
  */
-const resultArea = document.querySelector("[readonly]");
+const taBuild = document.querySelector("[editor=build]");
+/**
+ * Area used to set test data
+ * @type {HTMLTextAreaElement}
+ */
+const taTest = document.querySelector("[editor=test]");
 
-let schema = joi.string().regex(/jon(o|athan)/i);
+/**
+ * Area used to display validation results
+ * @type {HTMLTextAreaElement}
+ */
+const taResult = document.querySelector("[readonly]");
 
-new Editor(
-  document.querySelector("[editor=build]"),
-  `joi.string().regex(/jon(o|athan)/i)`,
-  function(text) {
-    let result;
-    try {
-      result = Function("return " + text);
-      this.element.classList.remove("invalid");
-    } catch (error) {
-      console.error(error);
-      this.element.classList.add("invalid");
-    }
+let schema = joi.object({
+  id: joi.string().default("newID"),
+  name: joi.object({
+    first: joi.string().max(15),
+    last: joi.string().max(30),
+    nick: joi.string().max(50)
+  })
+});
 
-    schema = result();
+let data = {
+  name: {
+    first: "Jonathan",
+    last: "Augustine",
+    nick: "Jono"
   }
-);
+};
 
-new Editor(document.querySelector("[editor=test]"), `"Jonathan"`, function(
-  text
-) {
-  // Pull data
-  let dataFunc;
+/**
+ * Sets the current schema
+ */
+const setSchema = (text = taBuild.value) => {
+  let result;
   try {
-    dataFunc = new Function("return " + text);
+    result = Function("return " + text);
+    taBuild.classList.remove("invalid");
   } catch (error) {
-    console.log(error);
-    this.element.classList.add("invalid");
+    console.error(error);
+    taBuild.classList.add("invalid");
     return;
   }
 
-  let data = dataFunc();
+  schema = result();
+};
+
+/**
+ * @returns {string} The validation result
+ */
+const testData = () => {
+  // Pull data
+  let text = taTest.value;
+  let dataFunc;
+  try {
+    dataFunc = new Function("return " + text);
+    taTest.classList.remove("invalid");
+  } catch (error) {
+    console.log(error);
+    taTest.classList.add("invalid");
+    return;
+  }
+
+  data = dataFunc();
 
   // Validate
   const { value, error, errors } = schema.validate(data);
 
-  console.log(value, error, errors);
-
-  resultArea.value = error || errors || value;
+  taResult.value = JSON.stringify(error || errors || value, null, 2);
 
   if (error || errors) {
-    resultArea.classList.add("invalid");
+    taResult.classList.add("invalid");
+    return;
   } else {
-    resultArea.classList.remove("invalid");
+    taResult.classList.remove("invalid");
   }
-});
+};
+
+document.getElementById("run_test").onclick = testData;
+
+new Editor(
+  taBuild,
+  `joi.object({
+ id: joi.string().default("newID"),
+ name: joi.object({
+   first: joi.string().max(15),
+   last: joi.string().max(30),
+   nick: joi.string().max(50)
+ })
+})`,
+  setSchema
+);
+
+new Editor(taTest, JSON.stringify(data, null, 2), testData);
+
+testData();
