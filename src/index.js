@@ -1,5 +1,6 @@
 import Editor from "./Editor";
 import joi from "@hapi/joi";
+import "./tabs";
 
 // Set a global reference to JOI so eval can find it
 window.joi = joi;
@@ -26,16 +27,16 @@ let schema = joi.object({
   name: joi.object({
     first: joi.string().max(15),
     last: joi.string().max(30),
-    nick: joi.string().max(50)
-  })
+    nick: joi.string().max(50),
+  }),
 });
 
 let data = {
   name: {
     first: "Jonathan",
     last: "Augustine",
-    nick: "Jono"
-  }
+    nick: "Jono",
+  },
 };
 
 /**

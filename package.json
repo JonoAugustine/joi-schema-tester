@@ -4,7 +4,7 @@
   "description": "An interactive app for testing [Hapi/JOI](https://www.npmjs.com/package/@hapi/joi)\r Schemas.",
   "main": "src/index.js",
   "scripts": {
-    "dev": "parcel serve index.html -d docs",
+    "dev": "parcel serve index.html -d dev",
     "build": "rm -rf docs && parcel build index.html -d docs --public-url /joi-schema-tester"
   },
   "repository": {
@@ -21,7 +21,7 @@
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
-    "parcel-bundler": "^1.12.4",
+    "parcel-bundler": "1.12.4",
     "sass": "^1.26.1"
   },
   "dependencies": {

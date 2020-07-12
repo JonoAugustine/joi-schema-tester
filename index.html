@@ -8,70 +8,35 @@
     <link rel="stylesheet" href="./src/index.scss" />
   </head>
   <body>
-    <div id="root">
-      <header></header>
-      <main>
-        <div class="container">
-          <!-- Build Area -->
-          <div class="input-section">
-            <h2>Build Your Schema</h2>
-            <button
-              onclick="(() => {window.open('https:\/\/hapi.dev/family/joi/', '_blank')})()"
-            >
-              Check JOI Docs
-            </button>
-            <textarea class="valid" editor="build"></textarea>
-          </div>
-
-          <!-- Test Area -->
-          <div class="input-section">
-            <h2>Test Your Data</h2>
-            <textarea class="valid" editor="test"></textarea>
-          </div>
-
-          <!-- Result Area -->
-          <div class="input-section">
-            <h2>Validation Results</h2>
-            <textarea class="valid" editor readonly></textarea>
-          </div>
-
-          <button id="run_test">Test Your Data</button>
+    <header></header>
+    <main>
+      <div class="container">
+        <!-- Build Area -->
+        <div class="input-section">
+          <h2>Build Your Schema</h2>
+          <a target="_blank" href="https://hapi.dev/family/joi">
+            Check The JOI Docs
+          </a>
+          <textarea class="valid" editor="build"></textarea>
         </div>
-      </main>
-    </div>
 
-    <script>
-      // Use tabs in text area
-      document.querySelectorAll("textarea").forEach(el =>
-        el.addEventListener(
-          "keydown",
-          function(e) {
-            if (e.keyCode === 9) {
-              // tab was pressed
-              // get caret position/selection
-              var start = this.selectionStart;
-              var end = this.selectionEnd;
+        <!-- Test Area -->
+        <div class="input-section">
+          <button id="run_test">Test Your Data</button>
+          <textarea class="valid" editor="test"></textarea>
+        </div>
 
-              var target = e.target;
-              var value = target.value;
+        <!-- Result Area -->
+        <div class="input-section">
+          <h2>Validation Results</h2>
+          <textarea class="valid" editor readonly></textarea>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <a href="https://JonoAugustine.com" target="_blank">Made By Jono</a>
+    </footer>
 
-              // set textarea value to: text before caret + tab + text after caret
-              target.value =
-                value.substring(0, start) +
-                " ".repeat(2) +
-                value.substring(end);
-
-              // put caret at right position again (add one for the tab)
-              this.selectionStart = this.selectionEnd = start + 1;
-
-              // prevent the focus lose
-              e.preventDefault();
-            }
-          },
-          false
-        )
-      );
-    </script>
     <script src="./src/index.js"></script>
   </body>
 </html>
